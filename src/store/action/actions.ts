@@ -1,11 +1,9 @@
 import { Action, ActionTree } from 'vuex';
-import { LoginState } from './state';
-import { ActionMutationsTypes, LoginMutationsTypes } from './mutations';
+import { ActionMutationsTypes } from './mutations';
 import { RootState } from '@/store';
-import Usuario from '@/models/Usuario';
 import { Container } from 'typescript-ioc';
-import { LoginCadastroService } from '@/service/LoginCadastroService';
 import { AcoesService } from '@/service/AcoesService';
+import { ActionState } from './state';
 import Acoes from '@/models/Acoes';
 
 export enum ActionActionTypes {
@@ -13,7 +11,7 @@ export enum ActionActionTypes {
   CADASTRAR = 'CADASTRAR',
 }
 
-const actions: ActionTree<LoginState, RootState> = {
+const actions: ActionTree<ActionState, RootState> = {
 
   async [ActionActionTypes.ACOES]({ commit }) {
     const service = Container.get(

@@ -1,5 +1,5 @@
 export enum StoreNamespaces {
-  ESTATISTICAS = 'estatisticas',
-  ENTRADA_SAIDA = 'entradaSaida',
-  GLOBAL = "global"
+  GLOBAL = "global",
+  LOGIN = "login",
+  ACTION = "action",
 }

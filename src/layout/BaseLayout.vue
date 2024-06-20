@@ -36,11 +36,11 @@
                 <v-list-item-title>Graficos</v-list-item-title>
               </v-list-item-content>
             </template>
-            <v-list-item @click="estatisticas">
+            <!-- <v-list-item @click="estatisticas">
               <v-list-item-content>
                 <v-list-item-title class="ml-4">Estatisticas</v-list-item-title>
               </v-list-item-content>
-            </v-list-item>
+            </v-list-item> -->
           </v-list-group>
 
         </v-list>
@@ -48,8 +48,8 @@
     </header>
     <main>
       <v-container fluid class="px-0">
-          <router-view />
-        </v-container>
+        <router-view />
+      </v-container>
     </main>
 
   </section>
@@ -67,17 +67,12 @@ export default class BaseLayout extends Vue {
   public drawer: boolean = false;
   public cor: string = '#00CED1';
 
-  private teste() {
+  public teste() {
     if (this.$route.name !== 'teste') {
       this.$router.push({ name: 'teste' });
     }
   }
 
-  private estatisticas() {
-    if (this.$route.name !== 'estatisticas') {
-      this.$router.push({ name: 'estatisticas' });
-    }
-  }
 
 
 }

@@ -1,10 +1,10 @@
 import { ActionTree } from 'vuex';
-import { LoginState } from './state';
-import { LoginMutationsTypes } from './mutations';
 import { RootState } from '@/store';
-import Usuario from '@/models/Usuario';
 import { Container } from 'typescript-ioc';
 import { LoginCadastroService } from '@/service/LoginCadastroService';
+import { LoginMutationsTypes } from './mutations';
+import { LoginState } from './state';
+import Usuario from '@/models/Usuario';
 
 export enum LoginActionTypes {
   LOGAR = 'LOGAR',

@@ -5,7 +5,7 @@ import axios from '@/axiosConfig';
 
 export enum LoginMutationsTypes {
   LOGAR = 'LOGAR',
-  USUARIO = 'USUARIO',
+  USUARIO ='USUARIO',
   SET_TOKEN = 'SET_TOKEN',
   LOGOUT = 'LOGOUT',
 }
@@ -23,9 +23,9 @@ const mutations: MutationTree<LoginState> = {
   },
   [LoginMutationsTypes.LOGOUT](state: LoginState) {
     state.token = '';
-    state.usuario = null;
-    localStorage.removeItem('token');
-    delete axios.defaults.headers.common['Authorization'];
+      state.usuario = null;
+      localStorage.removeItem('token');
+      delete axios.defaults.headers.common['Authorization'];
   },
 
 };
