@@ -1,12 +1,17 @@
 <template id="app">
   <section>
     <header>
-
-      <v-app-bar class="toolbar" :color="cor">
+      <v-app-bar class="toolbar" :color="cor" height="80px"> 
         <v-icon @click="drawer = !drawer" color="primary" large>mdi-menu</v-icon>
-        <v-toolbar-title class="ml-5">
+        <h3 class="ml-5 d-flex justify-center">Ações Sustentáveis - Gerenciador</h3>
+        <v-toolbar-title class="ml-5 flex-grow-1"> <!-- Use flex-grow-1 para esticar o título -->
           <v-img :width="tamanhoImagem" :src="imagemCabecalho"></v-img>
-        </v-toolbar-title>
+          
+          </v-toolbar-title>
+        
+        <v-btn icon @click="fazerLogout"> <!-- Botão de logout à direita -->
+          <v-icon>mdi-logout</v-icon>
+        </v-btn>
       </v-app-bar>
 
       <v-navigation-drawer v-model="drawer" fixed temporary>
@@ -48,19 +53,27 @@
     </header>
     <main>
       <v-container fluid class="px-0">
-        <router-view />
-      </v-container>
+          <router-view />
+        </v-container>
     </main>
 
   </section>
 </template>
 
 <script lang="ts">
+import { LoginActionTypes } from '@/store/login/actions';
+import { StoreNamespaces } from '@/store/namespaces';
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+const namespaces = namespace(StoreNamespaces.LOGIN);
 
-@Component
+@Component({})
 export default class BaseLayout extends Vue {
-  public imagemCabecalho: string = "https://upload.wikimedia.org/wikipedia/pt/b/bc/CBLOL_logo_2022.png";
+
+  @namespaces.Action(LoginActionTypes.LOGAR)
+  public logar!: (request: boolean) => Promise<void>;
+
+  public imagemCabecalho: string = "https://www.hemoce.ce.gov.br/wp-content/uploads/sites/105/2021/02/sustentavel-600x600.png";
   public tamanhoImagem = "80px";
 
 
@@ -73,6 +86,11 @@ export default class BaseLayout extends Vue {
     }
   }
 
+  public fazerLogout(){
+    this.logar(false);
+    this.$router.push({ name: 'login' });
+
+  }
 
 
 }
