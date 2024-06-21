@@ -21,7 +21,7 @@ export class AcoesService {
 
     public async buscarAcoes() {
         try {
-            const response = await axios.get('/getAction');
+            const response = await axios.get('/actions');
             return response.data;
         } catch (error) {
             throw error;
@@ -30,7 +30,7 @@ export class AcoesService {
 
     public async adicionarAcao(data: Acoes) {
         try {
-            const response = await axios.post('/addAction', data);
+            const response = await axios.post('/actions', data);
             return response.data;
         } catch (error) {
             throw error;

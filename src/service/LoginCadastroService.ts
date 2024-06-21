@@ -20,8 +20,7 @@ export class LoginCadastroService {
 
     public async cadastrar(data: Usuario) {
         try {
-            const response = await axios.post('/register', data);
-            console.log('teste')
+            const response = await axios.post('/auth/register', data);
             return response.data;
         } catch (error) {
             throw error;
@@ -30,7 +29,7 @@ export class LoginCadastroService {
 
     public async login(data: Usuario) {
         try {
-            const response = await axios.post('/login', data);
+            const response = await axios.post('/auth/login', data);
             const token = response.data.token;
             if (token) {
                 localStorage.setItem('token', token);

@@ -7,6 +7,7 @@ import Cadastro from '@/components/login/Cadastro.vue'
 import EmptyLayout from '@/layout/EmptyLayout.vue'
 import store from '@/store'
 import DashBoardAcoes from '@/components/DashBoardAcoes/DashBoardAcoes.vue'
+import EstatisticasAcoes from '@/components/Estatisticas/EstatisticasAcoes.vue'
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -18,7 +19,7 @@ const routes: Array<RouteConfig> = [
   },
 
   {
-    path: '/login',
+    path: '/',
     name: 'login',
     component: Login,
     meta: { layout: EmptyLayout },
@@ -34,7 +35,14 @@ const routes: Array<RouteConfig> = [
     path: '/dashboard',
     name: 'dashboard',
     component: DashBoardAcoes,
-    meta: { layout: EmptyLayout },
+    meta: { requiresAuth: true }, // Rota protegida
+  },
+
+  {
+    path: '/estatisticas',
+    name: 'estatisticas',
+    component: EstatisticasAcoes,
+    meta: { requiresAuth: true }, // Rota protegida
   },
 
 ]
@@ -43,20 +51,20 @@ const router = new VueRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some(record => record.meta.requiresAuth)) {
-//     // Verificar se o usuário está autenticado
-//     if (!store.getters.isAuthenticated) {
-//       // Redirecionar para a página de login
-//       next({
-//         path: '/login',
-//         query: { redirect: to.fullPath },
-//       });
-//     } else {
-//       next();
-//     }
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // Verificar se o usuário está autenticado
+    if (!store.getters['login/AUTENTICADO']) {
+      // Redirecionar para a página de login
+      next({
+        path: '/',
+        query: { redirect: to.fullPath },
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
 export default router

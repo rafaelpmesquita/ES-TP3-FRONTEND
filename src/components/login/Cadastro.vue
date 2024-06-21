@@ -5,7 +5,7 @@
           <v-card class="login-card">
             <v-card-title class="headline">Cadastro</v-card-title>
             <v-card-text>
-              <v-form @submit.prevent="cadastrar" ref="formCadastro">
+              <v-form  ref="formCadastro">
                 <v-text-field :rules="[regra.campoObrigatorio, regra.apenasLetras]" v-model="nome" label="Nome" outlined
                   dense required background-color="white"></v-text-field>
                 <v-text-field v-model="senha" label="Senha" :rules="[regra.campoObrigatorio]" type="password" outlined dense
@@ -13,7 +13,7 @@
                 <v-text-field v-model="confirmarSenha" label="Confirmar Senha"
                   :rules="[regra.campoObrigatorio, senhasDiferentes]" type="password" outlined dense required
                   background-color="white"></v-text-field>
-                <v-btn color="primary" dark block type="submit">Cadastrar</v-btn>
+                <v-btn @click="cadastrar" color="primary" dark block type="submit">Cadastrar</v-btn>
               </v-form>
               <p>Já tem uma conta? <router-link to="/login">Faça login</router-link></p>
             </v-card-text>
@@ -67,7 +67,7 @@
     };
     public async cadastrar() {
       const formulario: any = this.$refs.formCadastro;
-      if (!formulario.validate()) {
+      if (formulario.validate()) {
         try {
           await this.cadastrarUsuario(new Usuario(this.nome!, this.senha!))
           this.mensagemCadastro = 'Usuário cadastrado com sucesso.'

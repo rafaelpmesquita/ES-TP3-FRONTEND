@@ -1,96 +1,85 @@
 <template>
-    <DataTable :value="variavel" paginator showGridlines :rows="10" dataKey="id" filterDisplay="menu"
-        :globalFilterFields="colunasLower" :loading="loading" :filters.sync="filters">
-        <template #header>
-            <div class="flex justify-content-between">
-                <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined @click="clearFilter()" />
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search" />
-                    <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
-                </span>
-            </div>
-        </template>
-        <template #empty> Nada encontrado. </template>
-        <template #loading> Carregando dados. Por favor, aguarde. </template>
-        <div v-for="coluna in colunas">
-            <Column :field="coluna.toLowerCase()" :header="coluna" style="min-width: 12rem">
-                <template #body="slotProps">
-                    <span>{{ slotProps.data[slotProps.column.field] }}</span>
-                </template>
-                <template #filter="{ filterModel }">
-                    <InputText v-model="filterModel.value" type="text" class="p-column-filter"
-                        :placeholder="'Search ' + coluna.toLowerCase() + ':'" />
-                </template>
-            </Column>
-        </div>
-    </DataTable>
-</template>
-    
-<script lang="ts">
-import { ref } from 'vue';
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import Button from 'primevue/button';
-import 'primevue/resources/themes/saga-blue/theme.css';
-import 'primevue/resources/primevue.min.css';
-import 'primeicons/primeicons.css';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
-import InputText from 'primevue/inputtext';
-import { filter } from 'vue/types/umd';
-import { elements } from 'chart.js';
+    <v-container fluid>
+        <v-data-table :headers="headers" :items="acoes" class="elevation-1" show-select item-value="id"
+            :loading="loading">
+            <template v-slot:top>
+                <v-toolbar flat>
+                    <v-toolbar-title>Data Table</v-toolbar-title>
+                    <v-divider class="mx-4" inset vertical></v-divider>
+                    <v-spacer></v-spacer>
+                </v-toolbar>
+            </template>
 
-@Component({
-    components: { DataTable, Column, InputText, Button },
-})
+            <template v-slot:item.nomeDaAcao="{ item }">
+                <span>{{ item.nomeDaAcao }}</span>
+            </template>
+
+            <template v-slot:item.nomeDoUsuario="{ item }">
+                <span>{{ item.nomeDoUsuario }}</span>
+            </template>
+
+            <template v-slot:item.tipoDeAcao="{ item }">
+                <span>{{ item.tipoDeAcao }}</span>
+            </template>
+
+            <template v-slot:item.temperatura="{ item }">
+                <span>{{ item.temperatura }}</span>
+            </template>
+
+            <template v-slot:item.data="{ item }">
+                <span>{{ item.data }}</span>
+            </template>
+
+            <template v-slot:no-data>
+                <v-alert :value="true" color="error" icon="mdi-alert">
+                    Nada encontrado.
+                </v-alert>
+            </template>
+
+            <template v-slot:loading>
+                <v-progress-circular indeterminate color="primary" size="70"></v-progress-circular>
+                <span>Carregando dados. Por favor, aguarde.</span>
+            </template>
+        </v-data-table>
+    </v-container>
+</template>
+  
+<script lang="ts">
+import Acoes from '@/models/Acoes';
+import { ActionGetterTypes } from '@/store/action/getters';
+import { StoreNamespaces } from '@/store/namespaces';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+const namespaces = namespace(StoreNamespaces.ACTION);
+
+@Component
 export default class DataTableBase extends Vue {
     public loading: boolean = false;
-    public filters: any = ref();
-    public colunasLower: string[] = [];
+    public filters: any = { global: '' };
 
-    @Prop()
+    @Prop({ required: true })
     public colunas!: string[];
 
-    @Prop()
-    public variavel!: any[];
+    @namespaces.Getter(ActionGetterTypes.ACOES)
+    public acoes!: Acoes[];
+
+    public get headers() {
+        var a=  this.colunas.map((coluna) => ({
+            text: coluna,
+            value: coluna,
+        }));
+        console.log(a)
+        return a;
+    }
 
     public clearFilter() {
-        this.initFilters();
-    }
-
-    public initFilters() {
-        if (!this.filters) {
-            this.filters = {};
-        }
-
-        // Configurar o filtro global aqui
-        this.filters = {
-            global: {
-                value: null,
-                matchMode: FilterMatchMode.CONTAINS,
-            },
-        };
-
-        // Configurar os filtros locais
-        for (const coluna of this.colunasLower) {
-            let filterMatchMode = FilterMatchMode.STARTS_WITH;
-            this.filters[coluna] = {
-                operator: FilterOperator.AND,
-                constraints: [{ value: null, matchMode: filterMatchMode }],
-            };
-        }
-    }
-
-
-    public beforeMount() {
-        this.colunas.forEach(element=> this.colunasLower.push(element.toLowerCase()));
-        this.initFilters();
+        this.filters.global = '';
     }
 
 }
 </script>
-
-<style>
+  
+<style scoped>
 .textoSnackbar {
     color: black;
     font-family: Roboto;
@@ -99,3 +88,4 @@ export default class DataTableBase extends Vue {
     font-size: 14px;
 }
 </style>
+  

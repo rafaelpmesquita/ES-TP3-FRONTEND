@@ -5,6 +5,7 @@ import { RootState } from '@/store';
 export enum LoginGetterTypes {
   USUARIO = 'USUARIO',
   TOKEN = 'TOKEN',
+  AUTENTICADO="AUTENTICADO"
 }
 
 const getters: GetterTree<LoginState, RootState> = {
@@ -14,6 +15,10 @@ const getters: GetterTree<LoginState, RootState> = {
   [LoginGetterTypes.TOKEN](state) {
     return state.token;
   },
+  [LoginGetterTypes.AUTENTICADO](state) {
+    return state.isAuthenticate;
+  },
+
 };
 
 export default getters;

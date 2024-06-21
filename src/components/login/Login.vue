@@ -5,12 +5,12 @@
         <v-card class="login-card">
           <v-card-title class="headline">Login</v-card-title>
           <v-card-text>
-            <v-form @submit.prevent="login">
+            <v-form>
               <v-text-field v-model="username" label="Nome" outlined dense required
                 background-color="white"></v-text-field>
               <v-text-field v-model="password" label="Senha" type="password" outlined dense required
                 background-color="white"></v-text-field>
-              <v-btn color="primary" dark block type="submit">Entrar</v-btn>
+              <v-btn color="primary" @click="login" dark block type="submit">Entrar</v-btn>
             </v-form>
             <p>Não tem uma conta? <a @click="telaCadastro">Crie uma conta</a></p>
           </v-card-text>
@@ -50,7 +50,6 @@ export default class Login extends Vue {
       this.mensagemCadastro = 'Login Realizado com Sucesso'
       this.icone = 'mdi-check-circle-outline'
       this.janelaAberta = true;
-      await this.delay(2000);
       this.$router.push({ name: 'teste' });
     } catch (e) {
       this.icone = 'mdi-error-outline'
